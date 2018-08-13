@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GitHub OAuth demo</title>
+    <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+    <link href="//cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body style="padding: 10px">
+    <div class="container">
+      <!-- 如果没有登录则显示登录 -->
+      <a href="https://github.com/login/oauth/authorize?client_id=a3144def15f37b5cdf23" class="login-btn btn btn-primary d-none">用 GitHub 登录</a>
+
+      <!-- 如果已经登录了则显示用户信息和退出登录按钮 -->
+      <a href="javascript:;" class="logout-btn btn btn-primary d-none">退出登录</a>
+      <div class="user-info" style="margin-top:10px"></div>
+    </div>
+    <script>
+      const key = 'token'
+      const val = localStorage.getItem(key)
+      
+      // 没有授权（这里没有考虑 token 过期）
+      if (!val) {
+        document.querySelector('.login-btn').classList.remove('d-none')
+      } else { // 授权过了
+        document.querySelector('.logout-btn').classList.remove('d-none')
+        
+        // 获取授权用户信息
+        $.get('/api/getUserinfo', {token: val}, res => {
+          const user = res.data
+          document.querySelector('.user-info').innerHTML = 
+          `
+            <img src="${user.avatar_url}" style="width:100px;height:100px;border-radius:50%"/>
+            ${user.name}
+          `
+        })
+        
+        // 退出授权登录
+        document.querySelector('.logout-btn').onclick = () => {
+          localStorage.removeItem(key)
+          location.reload()
+        }
+      }
+    </script>
+  </body>
+</html>
