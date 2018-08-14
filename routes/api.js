@@ -31,10 +31,12 @@ function getToken(code) {
 
 function getUserinfo(token) {
   return new Promise(resolve => {
-    fetch('https://api.github.com/user?access_token=' + token, {
+    // fetch('https://api.github.com/user?access_token=' + token, {
+    fetch('https://api.github.com/user', {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': "token " + token
       }
     })
     .then(res => {
