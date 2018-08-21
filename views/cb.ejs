@@ -4,15 +4,27 @@
     <title>GitHub OAuth demo</title>
   </head>
   <body>
-  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
   <script>
     // 回调的 url 中获取 code 参数
     const code = location.search.replace(/\?code\=/, '')
 
     // code 换取 token，存入本地
-    $.post('/api/sendbackCode', {code}, res => {    
+    fetch("/api/sendbackCode",{
+      method:'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        code
+      })
+    })
+    .then(res => res.json())
+    .then(res => {
       localStorage.setItem('token', res.data)
-      location.href = '/'
+      location.href = `/`
+    })
+    .catch(error => {
+      alert(error)
     })
   </script>
   </body>

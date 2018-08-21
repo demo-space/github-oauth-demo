@@ -2,30 +2,45 @@
 <html>
   <head>
     <title>GitHub OAuth demo</title>
-    <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
-    <link href="//cdn.bootcss.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      .d-none {display: none}
+      body {padding: 10px}
+      .user-info {margin-top: 10px}
+    </style>
   </head>
-  <body style="padding: 10px">
-    <div class="container">
+  <body>
+    <div>
       <!-- 如果没有登录则显示登录 -->
-      <a href="https://github.com/login/oauth/authorize?client_id=a3144def15f37b5cdf23" class="login-btn btn btn-primary d-none">用 GitHub 登录</a>
+      <a href="https://github.com/login/oauth/authorize?client_id=a3144def15f37b5cdf23" class="login-btn d-none">用 GitHub 登录</a>
 
       <!-- 如果已经登录了则显示用户信息和退出登录按钮 -->
-      <a href="javascript:;" class="logout-btn btn btn-primary d-none">退出登录</a>
-      <div class="user-info" style="margin-top:10px"></div>
+      <a href="javascript:;" class="logout-btn d-none">退出登录</a>
+      <div class="user-info"></div>
     </div>
     <script>
       const key = 'token'
       const val = localStorage.getItem(key)
       
-      // 没有授权（这里没有考虑 token 过期）
+      // 没有授权
       if (!val) {
         document.querySelector('.login-btn').classList.remove('d-none')
       } else { // 授权过了
         document.querySelector('.logout-btn').classList.remove('d-none')
         
         // 获取授权用户信息
-        $.get('/api/getUserinfo', {token: val}, res => {
+        fetch('/api/getUserinfo' + "?token=" + val, { 
+          method:'get' 
+        }).then(res => {
+          return res.json()
+        }).then(res => {
+          console.log(res)
+
+          // token 过期
+          if (res.data.message === 'Bad credentials') {
+            localStorage.removeItem(key)
+            location.reload()
+          }
+          
           const user = res.data
           document.querySelector('.user-info').innerHTML = 
           `

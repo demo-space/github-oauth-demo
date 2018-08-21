@@ -40,7 +40,7 @@ function getUserinfo(token) {
       }
     })
     .then(res => {
-      resolve(res.text())
+      resolve(res.json())
     })
     .catch(e => {
       console.log(e)
@@ -60,7 +60,7 @@ router.post('/sendbackCode', async (ctx, next) => {
 router.get('/getUserinfo', async (ctx, next) => {
   const token = ctx.query.token
   const res = await getUserinfo(token)
-  ctx.body = {status: 0, data: JSON.parse(res)}
+  ctx.body = {status: 0, data: res}
 })
 
 module.exports = router
