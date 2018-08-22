@@ -1,6 +1,6 @@
 # HOW
 
-了理解并使用 GitHub OAuth 写的一个小 demo
+为了理解并使用 GitHub OAuth 写的一个小 demo
 
 首先需要注册一个新的 OAuth 应用（[链接](https://github.com/settings/applications/new)）。另外，在 [这里](https://github.com/settings/applications) 你可以看到你用 GitHub 授权登录的第三方应用列表
 
