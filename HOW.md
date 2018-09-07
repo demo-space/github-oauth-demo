@@ -15,5 +15,12 @@ demo 中有两个对 GitHub 服务器的请求，一个是用 code 换取 token�
 另外需要注意下：
 
 - token 会过期（demo 中简单根据返回做了判断，如果判断过期，则删除本地保存的 token，页面重载）
-- demo 中后端 HTTP 请求用了 node-fetch，之前是想用 axios，但是一直报错，不知原因 ~~（我简单查了下，可能是用 axios 在 http 环境下对 https 的请求会有 bug，如果是这样的话，应该是 axios 的 bug）~~ 直到找到 [这个 issue](https://github.com/axios/axios/issues/662#issuecomment-275085073) 我突然想起我的 `.zshrc` 中也有类似配置，注释掉就好了，又可以愉快的使用 axios 了
+- demo 中后端 HTTP 请求用了 node-fetch，之前是想用 axios，但是一直报错，不知原因 ~~（我简单查了下，可能是用 axios 在 http 环境下对 https 的请求会有 bug，如果是这样的话，应该是 axios 的 bug）~~ 直到找到 [这个 issue](https://github.com/axios/axios/issues/662#issuecomment-275085073) 我突然想起我的 `.zshrc` 中也有类似配置：
+
+  ```
+  # export http_proxy=http://127.0.0.1:1087;export https_proxy=http://127.0.0.1:1087;
+  ```
+
+  注释掉就好了，又可以愉快的使用 axios 了
+
 - 具体 OAuth 的实现细节与 demo 肯定有出入，比如 token 的存取（可能不是直接把 access_token 存在本地），回调 url 的设置等
