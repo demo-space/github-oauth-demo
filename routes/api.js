@@ -1,6 +1,7 @@
 const router = require('koa-router')()
 const fetch = require('node-fetch')
 const querystring = require('querystring')
+const axios = require('axios')
 
 router.prefix('/api')
 
@@ -32,7 +33,7 @@ function getToken(code) {
 function getUserinfo(token) {
   return new Promise(resolve => {
     // fetch('https://api.github.com/user?access_token=' + token, {
-    fetch('https://api.github.com/user', {
+    axios('https://api.github.com/user', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -40,7 +41,7 @@ function getUserinfo(token) {
       }
     })
     .then(res => {
-      resolve(res.json())
+      resolve(res.data)
     })
     .catch(e => {
       console.log(e)
